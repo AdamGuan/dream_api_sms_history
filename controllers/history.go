@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"dream_api_sms_history/models"
 	"dream_api_sms_history/helper"
+	"dream_api_sms_history/models"
 )
 
 //用户
@@ -18,6 +18,7 @@ type HistoryController struct {
 // @Failure 401 无权访问
 // @router /smssend [post]
 func (u *HistoryController) LogSmsSend() {
+	u.logRequest()
 	//ini return
 	datas := map[string]interface{}{"responseNo": 0}
 	//model ini
@@ -27,10 +28,10 @@ func (u *HistoryController) LogSmsSend() {
 	pkg := u.Ctx.Request.FormValue("pkg")
 	debug := u.Ctx.Request.FormValue("debug")
 	//
-	if len(pkg) > 0 && len(debug) > 0{
+	if len(pkg) > 0 && len(debug) > 0 {
 		//记录一条sms发送的log
 		debug2 := helper.StrToInt(debug)
-		historyObj.AddASmsLog(pkg,debug2)
+		historyObj.AddASmsLog(pkg, debug2)
 	}
 	//return
 	u.jsonEcho(datas)

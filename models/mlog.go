@@ -1,11 +1,11 @@
 package models
 
 import (
+	"encoding/json"
+	"github.com/astaxie/beego/config"
+	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/utils"
-	"github.com/astaxie/beego/context"
-	"github.com/astaxie/beego/config" 
-	"encoding/json"
 )
 
 var ErrLog *logs.BeeLogger
@@ -22,24 +22,24 @@ func init() {
 	logLogFile := otherConf.String("logLogFile")
 
 	ErrLog = logs.NewLogger(10000)
-	str,_ := json.Marshal(map[string]string{"filename":errLogFile})
+	str, _ := json.Marshal(map[string]string{"filename": errLogFile})
 	ErrLog.SetLogger("file", string(str))
 
 	DebugLog = logs.NewLogger(10000)
-	str,_ = json.Marshal(map[string]string{"filename":debugLogFile})
+	str, _ = json.Marshal(map[string]string{"filename": debugLogFile})
 	DebugLog.SetLogger("file", string(str))
 
 	LogLog = logs.NewLogger(10000)
-	str,_ = json.Marshal(map[string]string{"filename":logLogFile})
+	str, _ = json.Marshal(map[string]string{"filename": logLogFile})
 	LogLog.SetLogger("file", string(str))
 
 }
 
 //记录请求(log等级)
 func (u0 *MLog) LogRequest(u *context.Context) {
-	if Debug{
+	if Debug {
 		//log
-		str := "\nRquest\n"+utils.GetDisplayString("IP", u.Input.IP(), "Scheme",u.Input.Scheme(),"Uri", u.Input.Uri(),"Method", u.Input.Method(), "Params", u.Input.Params, "Post", u.Input.Request.Form,"Header", u.Input.Request.Header)
+		str := "\nRquest\n" + utils.GetDisplayString("IP", u.Input.IP(), "Scheme", u.Input.Scheme(), "Uri", u.Input.Uri(), "Method", u.Input.Method(), "Params", u.Input.Params, "Post", u.Input.Request.Form, "Header", u.Input.Request.Header)
 
 		LogLog.Info(str)
 	}
@@ -47,19 +47,19 @@ func (u0 *MLog) LogRequest(u *context.Context) {
 
 //记录返回(log等级)
 func (u0 *MLog) LogEcho(datas map[string]interface{}) {
-	if Debug{
+	if Debug {
 		//log
-		str := "\nEcho\n"+utils.GetDisplayString("datas", datas)
+		str := "\nEcho\n" + utils.GetDisplayString("datas", datas)
 
 		LogLog.Info(str)
 	}
 }
 
 //记录请求(500 err等级)
-func (u0 *MLog) LogRequestErr500(u *context.Context,code string) {
-	if DebugErrlog{
+func (u0 *MLog) LogRequestErr500(u *context.Context, code string) {
+	if DebugErrlog {
 		//log
-		str := "\n"+code+"\n"+utils.GetDisplayString("IP", u.Input.IP(), "Scheme",u.Input.Scheme(),"Uri", u.Input.Uri(),"Method", u.Input.Method(), "Params", u.Input.Params, "Post", u.Input.Request.Form,"Header", u.Input.Request.Header)
+		str := "\n" + code + "\n" + utils.GetDisplayString("IP", u.Input.IP(), "Scheme", u.Input.Scheme(), "Uri", u.Input.Uri(), "Method", u.Input.Method(), "Params", u.Input.Params, "Post", u.Input.Request.Form, "Header", u.Input.Request.Header)
 
 		ErrLog.Info(str)
 	}
@@ -67,9 +67,9 @@ func (u0 *MLog) LogRequestErr500(u *context.Context,code string) {
 
 //debug(debug等级)
 func (u0 *MLog) LogDebug(data interface{}) {
-	if Debug{
+	if Debug {
 		//log
-		str := "\nDebug\n"+utils.GetDisplayString("debug:",data)
+		str := "\nDebug\n" + utils.GetDisplayString("debug:", data)
 
 		DebugLog.Info(str)
 	}
